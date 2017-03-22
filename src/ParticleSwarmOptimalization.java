@@ -1,3 +1,4 @@
+package algorithms;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -5,10 +6,12 @@ import java.util.Random;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealVector;
 
+import functions.Function;
+
 public class ParticleSwarmOptimalization implements Optimizer {
-	private int swarmSize = 1000;
+	private int swarmSize = 100;
 	private double border = 10;
-	private int iteration = 1000;
+	private int iteration = 100;
 	private RealVector globalBest = null;
 	
 	private double omega = 0.1;
@@ -44,8 +47,8 @@ public class ParticleSwarmOptimalization implements Optimizer {
 		}
 		
 		public void step(RealVector newX, RealVector newV){
-			x = newX;
-			v = newV;
+			x = newX.copy();
+			v = newV.copy();
 		}
 		
 	}
@@ -92,15 +95,15 @@ public class ParticleSwarmOptimalization implements Optimizer {
 			swarm.add(p);
 			
 			if ( globalBest == null || F.f(pos)<F.f(globalBest))
-				globalBest = pos;
+				globalBest = pos.copy();
 		}
 		
 		for (int i=0; i<iteration; i++){
 			for (int j=0; j<swarmSize; j++){
 				Particle p = swarm.get(j);
-				RealVector x = p.getX();
-				RealVector v = p.getV();
-				RealVector best = p.getLocalBest();
+				RealVector x = p.getX().copy();
+				RealVector v = p.getV().copy();
+				RealVector best = p.getLocalBest().copy();
 				
 				for(int d=0; d<F.getDimension(); d++){
 					v.setEntry(d, omega*v.getEntry(d)+fiP*r.nextDouble()*(best.getEntry(d)-x.getEntry(d))+fiG*r.nextDouble()*(globalBest.getEntry(d)-x.getEntry(d)));
@@ -111,13 +114,13 @@ public class ParticleSwarmOptimalization implements Optimizer {
 				if (F.f(x)<F.f(p.getLocalBest())){
 					p.updateBest();
 					if (F.f(x)<F.f(globalBest))
-						globalBest = x;
+						globalBest = x.copy();
 				}	
 			}
 		}
 		
 		System.out.println("Particle swarm optimalization is done with " + swarmSize + " particle and " + iteration + " iteration.");
-		System.out.println("((  Gradient here: " + F.Df(globalBest).toString() + "  ))");
+		//System.out.println("((  Gradient here: " + F.Df(globalBest).toString() + "  ))");
 		return globalBest;
 	}
 

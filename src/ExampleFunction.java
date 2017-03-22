@@ -1,4 +1,4 @@
-import org.apache.commons.math3.linear.DiagonalMatrix;
+package functions;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
@@ -14,7 +14,7 @@ public class ExampleFunction implements Function {
 	@Override
 	public double f(RealVector variables) {
 		// y = (x-3)^2
-		if (id == 0) return -(variables.getEntry(0)-3)*(variables.getEntry(0)-3);
+		if (id == 0) return (variables.getEntry(0)-3)*(variables.getEntry(0)-3);
 		
 		// y = (x-21)^2+5x
 		if (id == 1) return (variables.getEntry(0)-21)*(variables.getEntry(0)-21)+5*variables.getEntry(0);
@@ -35,7 +35,7 @@ public class ExampleFunction implements Function {
 
 	@Override
 	public double df(double x) {
-		if (id == 0) return -2*(x-3);
+		if (id == 0) return 2*(x-3);
 		if (id == 1) return 2*(x-21)+5;
 		if (id == 5) return Math.cos(x);
 		return -1;
@@ -63,7 +63,7 @@ public class ExampleFunction implements Function {
 	
 	@Override
 	public double ddf(double x) {
-		if (id == 0) return -2;
+		if (id == 0) return 2;
 		if (id == 1) return 2;
 		if (id == 5) return -Math.sin(x);
 		return -1;

@@ -1,6 +1,10 @@
+package algorithms;
 
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealVector;
+
+import functions.Function;
+import main.Main;
 
 public class GradientAlgorithm implements Optimizer {
 
@@ -21,8 +25,8 @@ public class GradientAlgorithm implements Optimizer {
 		int ctr = 1;
 		
 		while (F.Df(xnNext).getNorm() >= Main.epszilon){
-			xnBefore = xn;
-			xn = xnNext;
+			xnBefore = xn.copy();
+			xn = xnNext.copy();
 			
 			RealVector DxB = F.Df(xnBefore);
 			RealVector Dx = F.Df(xn);
