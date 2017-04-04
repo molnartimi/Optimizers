@@ -7,6 +7,7 @@ import algorithms.GradientAlgorithm;
 import algorithms.MyLBFGS;
 import algorithms.NewtonsMethod;
 import algorithms.Optimizer;
+import algorithms.PSOwithGD;
 import algorithms.ParticleSwarmOptimalization;
 import algorithms.SimulatedAnnealing;
 import functions.ExampleFunction;
@@ -23,7 +24,7 @@ public class Main {
 		boolean run = true;
 		while(run){
 		
-			System.out.println("1 Newton's method\n2 Gradient descent\n3 Particle Swarm optimalization\n4 Simulated annealing\n5 L-BFGS\n0 Exit");
+			System.out.println("1 Newton's method\n2 Gradient descent\n3 Particle Swarm optimalization\n4 Simulated annealing\n5 L-BFGS\n6 PSO with Gradient descent\n0 Exit");
 			System.out.print("Select algorithm: ");
 			int algId = sc.nextInt();
 			
@@ -35,6 +36,7 @@ public class Main {
 			case 3: opt = new ParticleSwarmOptimalization(); break;
 			case 4: opt = new SimulatedAnnealing(); break;
 			case 5: opt = new MyLBFGS(); break;
+			case 6: opt = new PSOwithGD(); break;
 			case 0: run = false;
 			}
 			
