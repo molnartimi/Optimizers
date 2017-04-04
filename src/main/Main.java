@@ -14,7 +14,7 @@ import functions.ExampleFunction;
 import functions.Function;
 
 public class Main {
-	public static double epszilon=0.001;
+	public static double epszilon=0.00001;
 	
 	
 	public static void main(String[] args) {

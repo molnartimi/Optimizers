@@ -11,12 +11,12 @@ import functions.Function;
 public class ParticleSwarmOptimalization implements Optimizer {
 	protected int swarmSize = 100;
 	protected double border = 10;
-	protected int iteration = 100;
+	protected int iteration = 20;
 	protected RealVector globalBest = null;
 	
-	private double omega = 0.1;
-	private double fiP = 0.2;
-	private double fiG = 0.8;
+	protected double omega = 0.1;
+	protected double fiP = 0.2;
+	protected double fiG = 0.8;
 	
 	protected class Particle {
 		private RealVector x;
