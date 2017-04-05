@@ -4,7 +4,6 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealVector;
 
 import functions.Function;
-import main.Main;
 
 
 /**
@@ -18,8 +17,7 @@ public class SimulatedAnnealing implements Optimizer {
 		
 	@Override
 	public double method(Function F) {
-		RealVector result = Method(F);
-		return result.getEntry(0);
+		return Method(F).getEntry(0);
 	}
 	
 	// Calculate the acceptance probability
@@ -37,6 +35,8 @@ public class SimulatedAnnealing implements Optimizer {
 		int ctr=0;
 		double temp = inittemp;
 		RealVector xn = MatrixUtils.createRealVector(new double[F.getDimension()]);
+		xn.set(0.5);
+		
 		RealVector xnext = MatrixUtils.createRealVector(new double[F.getDimension()]);
 		double fx = F.f(xn);
 		double fxnext;

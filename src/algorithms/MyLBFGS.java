@@ -2,7 +2,6 @@ package algorithms;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealVector;
 
-import breeze.optimize.LBFGS;
 import functions.Function;
 import functions.MyDiffFunction;
 import hu.bme.mit.inf.optimization.wrapper.breeze.LbfgsWrapper;
@@ -27,6 +26,8 @@ public class MyLBFGS implements Optimizer {
 		MyDiffFunction diffF = new MyDiffFunction();
 		diffF.setFunction(F);
 		double[] xn = new double[F.getDimension()];
+		for(int i=0;i<F.getDimension();i++)
+			xn[i] = 0.5;
 		
 		double[] result = lbfgs.minimize(diffF, xn);
 		
