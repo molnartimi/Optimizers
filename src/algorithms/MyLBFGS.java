@@ -22,6 +22,8 @@ public class MyLBFGS implements Optimizer {
 
 	@Override
 	public RealVector Method(Function F) {
+		System.out.println("L-BFGS is started");
+		
 		LbfgsWrapper lbfgs = new LbfgsWrapper(maxIter,m,tolerance);
 		MyDiffFunction diffF = new MyDiffFunction();
 		diffF.setFunction(F);

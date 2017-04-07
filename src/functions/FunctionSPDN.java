@@ -19,9 +19,10 @@ import hu.bme.mit.inf.petridotnet.spdn.SpdnAnalyzer;
 import main.Main;
 
 public class FunctionSPDN implements Function {
-	SpdnAnalyzer analyzer;
-	List<Parameter> parameters;
-	Map<Reward,Double> empiricalMeasurements;
+	private SpdnAnalyzer analyzer;
+	private List<Parameter> parameters;
+	private Map<Reward,Double> empiricalMeasurements;
+	public static int ctr = 0;
 	
 	/**
 	 * 
@@ -41,9 +42,12 @@ public class FunctionSPDN implements Function {
 	}
 	
 	private AnalysisResult runAnalyzer(RealVector variables){
-		if(variables.getNorm()==0){
-			System.err.println("Variables in FunctionSPDN.runAnalyzer is {0;0}! I set it to epszilon.");
-			variables.set(Main.epszilon);
+		ctr++;
+		//if(ctr%500 == 0) System.err.println("=== " + ctr + ". runAnalyzer");
+		
+		if(variables.getEntry(1)==0){
+			System.err.println("\"serviceTime\" parameter in FunctionSPDN.runAnalyzer is 0! I set it to epszilon.");
+			variables.setEntry(1,Main.epszilon);
 		}
 		
 		Reward reward1 = (Reward)empiricalMeasurements.keySet().toArray()[0];

@@ -14,6 +14,7 @@ import org.apache.commons.math3.linear.RealVector;
 import algorithms.GradientAlgorithm;
 import algorithms.MyLBFGS;
 import algorithms.Optimizer;
+import algorithms.PSOwithGD;
 import algorithms.ParticleSwarmOptimalization;
 import algorithms.SimulatedAnnealing;
 import functions.Function;
@@ -58,25 +59,40 @@ public class MainSPDN {
 		
 		Function f = setModel();
 		
+		/*double[] tomb = new double[2];
+		tomb[0]=0.5;
+		tomb[1]=0;
+		
+		System.out.println(f.f(MatrixUtils.createRealVector(tomb)));*/
 		opt = new GradientAlgorithm();
 		result = opt.Method(f);
 		System.out.println("Gradient descent: " + result.toString());
-		
+		System.out.println("FunctionSPDN.runAnalyzer() counter: " + FunctionSPDN.ctr);
+		FunctionSPDN.ctr=0;
 		
 		opt = new ParticleSwarmOptimalization();
 		result = opt.Method(f);
 		System.out.println("Particle swarm optimalization: " + result.toString());
+		System.out.println("FunctionSPDN.runAnalyzer() counter: " + FunctionSPDN.ctr);
+		FunctionSPDN.ctr=0;
 		
+		opt = new PSOwithGD();
+		result = opt.Method(f);
+		System.out.println("Particle swarm optimalization with Gradient descent: " + result.toString());
+		System.out.println("FunctionSPDN.runAnalyzer() counter: " + FunctionSPDN.ctr);
+		FunctionSPDN.ctr=0;
 
 		opt = new SimulatedAnnealing();
 		result = opt.Method(f);
 		System.out.println("Simulated annealing: " + result.toString());
-		
+		System.out.println("FunctionSPDN.runAnalyzer() counter: " + FunctionSPDN.ctr);
+		FunctionSPDN.ctr=0;
 		
 		opt = new MyLBFGS();
 		result = opt.Method(f);
 		System.out.println("L-BFGS: " + result.toString());
-
+		System.out.println("FunctionSPDN.runAnalyzer() counter: " + FunctionSPDN.ctr);
+		FunctionSPDN.ctr=0;
 	}
 
 }

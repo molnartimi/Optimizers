@@ -16,6 +16,8 @@ public class GradientAlgorithm implements Optimizer {
 	@Override
 	public RealVector Method(Function F) {
 		
+		System.out.println("Gradient descent is started");
+		
 		double gamma = 1.0;
 		RealVector xn = MatrixUtils.createRealVector(new double[F.getDimension()]);
 		xn.set(0.5);

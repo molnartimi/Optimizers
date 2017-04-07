@@ -32,6 +32,8 @@ public class SimulatedAnnealing implements Optimizer {
 	
 	@Override
 	public RealVector Method(Function F) {
+		System.out.println("Simulated annealing is started");
+		
 		int ctr=0;
 		double temp = inittemp;
 		RealVector xn = MatrixUtils.createRealVector(new double[F.getDimension()]);
@@ -39,6 +41,7 @@ public class SimulatedAnnealing implements Optimizer {
 		
 		RealVector xnext = MatrixUtils.createRealVector(new double[F.getDimension()]);
 		double fx = F.f(xn);
+		double bestF = fx;
 		double fxnext;
 		RealVector best = xn.copy();
 		
@@ -53,8 +56,10 @@ public class SimulatedAnnealing implements Optimizer {
 					if (acceptanceProbability(fx,fxnext,temp) > Math.random())
 						xn = xnext.copy();
 					
-					if (F.f(xn) < F.f(best))
+					if (F.f(xn) < bestF){
 						best = xn.copy();
+						bestF = F.f(best);
+					}
 					
 					ctr++;
 				}

@@ -7,18 +7,20 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealVector;
 
 import functions.Function;
+import main.Main;
 
 public class ParticleSwarmOptimalization implements Optimizer {
-	private int swarmSize = 100;
-	private double border = 10;
-	private int iteration = 100;
-	private RealVector globalBest = null;
+	protected int swarmSize = 100;
+	protected double border = 5;
+	protected int iteration = 20;
+	protected RealVector globalBest = null;
+	protected double globalBestF;
 	
-	private double omega = 0.1;
-	private double fiP = 0.2;
-	private double fiG = 0.8;
+	protected double omega = 0.1;
+	protected double fiP = 0.2;
+	protected double fiG = 0.8;
 	
-	private class Particle {
+	protected class Particle {
 		private RealVector x;
 		private RealVector v;
 		private RealVector best;
@@ -53,27 +55,18 @@ public class ParticleSwarmOptimalization implements Optimizer {
 		
 	}
 	
-	@Override
-	public double method(Function f) {
-		return 0;
-	}
-
-	@Override
-	public RealVector Method(Function F) {
-		
-		ArrayList<Particle> swarm = new ArrayList<Particle>();
+	protected void putDownParticles(ArrayList<Particle> swarm,Function F){
 		Random r = new Random();
-		
-		double interval = 2*border/Math.sqrt(swarmSize);
-		double posX = -border;
-		double posY = -border;
+		/*double interval = border/Math.sqrt(swarmSize);
+		double posX = 0;
+		double posY = border;*/
 		
 		for(int i=0; i<swarmSize; i++) {
 			
 			RealVector pos = MatrixUtils.createRealVector(new double[F.getDimension()]);
 			RealVector vel = MatrixUtils.createRealVector(new double[F.getDimension()]);
 			
-			if (posX < border){
+			/*if (posX < border){
 				pos.setEntry(0, posX);
 				posX += interval;
 			}
@@ -84,19 +77,36 @@ public class ParticleSwarmOptimalization implements Optimizer {
 			
 			if (posY < border){
 				pos.setEntry(1, posY);
-			}
+			}*/
 			
 			for (int d=0; d<F.getDimension(); d++){
-				pos.setEntry(d, r.nextDouble()*2*border-border);
-				vel.setEntry(d, r.nextDouble()*4*border-2*border);
+				pos.setEntry(d, r.nextDouble()*border-border);
+				vel.setEntry(d, r.nextDouble()*2*border-border);
 			}
 			
 			Particle p = new Particle(pos,vel);
 			swarm.add(p);
 			
-			if ( globalBest == null || F.f(pos)<F.f(globalBest))
+			if ( globalBest == null || F.f(pos)<globalBestF){
 				globalBest = pos.copy();
+				globalBestF = F.f(globalBest);
+			}
+			
 		}
+	}
+	
+	@Override
+	public double method(Function f) {
+		return 0;
+	}
+
+	@Override
+	public RealVector Method(Function F) {
+		System.out.println("Particle swarm optimalization is started");
+		
+		ArrayList<Particle> swarm = new ArrayList<Particle>();
+		putDownParticles(swarm,F);
+		Random r = new Random();
 		
 		for (int i=0; i<iteration; i++){
 			for (int j=0; j<swarmSize; j++){
@@ -111,10 +121,13 @@ public class ParticleSwarmOptimalization implements Optimizer {
 				}
 				
 				p.step(x, v);
-				if (F.f(x)<F.f(p.getLocalBest())){
+				double Ff = F.f(x);
+				if (Ff<F.f(p.getLocalBest())){
 					p.updateBest();
-					if (F.f(x)<F.f(globalBest))
+					if (Ff<globalBestF){
 						globalBest = x.copy();
+						globalBestF = F.f(globalBest);
+					}
 				}	
 			}
 		}
