@@ -15,6 +15,12 @@ public class MyLBFGS implements Optimizer {
 	//private double xtol = Math.pow(2, -52);
 	private double tolerance = Main.epszilon;
 	
+	public MyLBFGS(){}
+	public MyLBFGS(int iter){
+		maxIter = iter;
+	}
+	
+	
 	@Override
 	public double method(Function F) {
 		return Method(F).toArray()[0];

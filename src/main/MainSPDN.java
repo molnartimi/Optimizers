@@ -27,22 +27,30 @@ import hu.bme.mit.inf.petridotnet.spdn.SpdnAnalyzer;
 
 public class MainSPDN {
 	
-	public static Function setModel(){
-		Spdn spdn = new Spdn("F:/Timi/BME/6.félév/Önálló laboratórium/Optimizers");
+	public static Function setModel(double idleEmpirical, double servedRequestsEmpirical){
+		Spdn spdn = new Spdn("E:/Timi/BME/6.félév/Önálló laboratórium/Optimizers");
         InputStream model;
 		try {
 			model = new FileInputStream("src/models/simple-server.pnml");
 			SpdnAnalyzer analyzer = spdn.openModel(model, AnalysisConfiguration.DEFAULT);
+			
+			//parameters
 			List<Parameter> parameters = new ArrayList<Parameter>();
-	        parameters.add(Parameter.ofName("requestRate"));
+			parameters.add(Parameter.ofName("requestRate"));
 	        parameters.add(Parameter.ofName("serviceTime"));
+	        
+	        //rewards
 	        Reward idle = Reward.instantaneous("Idle");
 	        Reward servedRequests = Reward.instantaneous("ServedRequests");
-	        Map<Reward, Double> empiricalMeasurements = new HashMap<Reward,Double>();
-	        empiricalMeasurements.put(idle, 0.4);
-	        empiricalMeasurements.put(servedRequests, 0.02);
+	        ArrayList<Reward> rewardList = new ArrayList<Reward>();
+	        rewardList.add(idle);
+	        rewardList.add(servedRequests);
 	        
-	        return new FunctionSPDN(analyzer, parameters, empiricalMeasurements);
+	        Map<Reward, Double> empiricalMeasurements = new HashMap<Reward,Double>();
+	        empiricalMeasurements.put(idle, idleEmpirical);
+	        empiricalMeasurements.put(servedRequests, servedRequestsEmpirical);
+	        
+	        return new FunctionSPDN(analyzer, parameters, rewardList, empiricalMeasurements);
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -53,11 +61,13 @@ public class MainSPDN {
 
 	public static void main(String[] args) {
 		
+		long startTime = System.nanoTime();
+		
 		Optimizer opt;
 		
 		RealVector result;
 		
-		Function f = setModel();
+		Function f = setModel(0.4, 1.2);
 		
 		/*double[] tomb = new double[2];
 		tomb[0]=0.5;
@@ -70,7 +80,7 @@ public class MainSPDN {
 		System.out.println("FunctionSPDN.runAnalyzer() counter: " + FunctionSPDN.ctr);
 		FunctionSPDN.ctr=0;
 		
-		opt = new ParticleSwarmOptimalization();
+		/*opt = new ParticleSwarmOptimalization();
 		result = opt.Method(f);
 		System.out.println("Particle swarm optimalization: " + result.toString());
 		System.out.println("FunctionSPDN.runAnalyzer() counter: " + FunctionSPDN.ctr);
@@ -92,7 +102,7 @@ public class MainSPDN {
 		result = opt.Method(f);
 		System.out.println("L-BFGS: " + result.toString());
 		System.out.println("FunctionSPDN.runAnalyzer() counter: " + FunctionSPDN.ctr);
-		FunctionSPDN.ctr=0;
+		FunctionSPDN.ctr=0;*/
 	}
 
 }
