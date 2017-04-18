@@ -11,8 +11,8 @@ import functions.Function;
 
 public class PSOwithGD extends ParticleSwarmOptimalization{
 /*	protected int swarmSize = 100;
-	protected double border = 10;
-	protected int iteration = 20;
+	protected double border = 5;
+	protected int iteration = 100;
 	protected RealVector globalBest = null; 
 	
 	protected double omega = 0.1;
@@ -22,15 +22,25 @@ public class PSOwithGD extends ParticleSwarmOptimalization{
 	private double fiGrad;
 	private double gamma;
 	
+	private int version=1;;
+	
 	public PSOwithGD(){
 		super();
-		iteration = 10;
+		iteration = 20;
 		
-		omega = 0.1;
-		fiP = 0.2;
-		fiG = 0.3;
-		fiGrad = 0.4;
-		gamma = 0.1;
+		omega = 0.3;
+		fiP = 0.4;
+		fiG = 0.8;
+		fiGrad = 0.2;
+		gamma = 0.5;
+	}
+	
+	public void version1(){
+		version=1;
+	}
+	
+	public void version2(){
+		version=2;
 	}
 	
 	public RealVector Method(Function F) { 
@@ -48,17 +58,23 @@ public class PSOwithGD extends ParticleSwarmOptimalization{
 				RealVector v = p.getV().copy();
 				RealVector best = p.getLocalBest().copy();
 				
-				
-				// With simple gradient descent
-				//x = x.add(F.Df(x).mapMultiply(-gamma));
-				//gamma = gamma*2 > iteration ? gamma*2 : gamma;
-				
-				// With gradient
-				RealVector g = F.Df(x);
-				for(int d=0; d<F.getDimension(); d++){
+				switch(version){
+				case 1:
+					// With gradient
+					RealVector g = F.Df(x);
+					for(int d=0; d<F.getDimension(); d++){
 					v.setEntry(d, omega*v.getEntry(d) + fiP*r.nextDouble()*(best.getEntry(d)-x.getEntry(d)) + fiG*r.nextDouble()*(globalBest.getEntry(d)-x.getEntry(d)) - fiGrad*g.getEntry(d) );
 					x.setEntry(d, x.getEntry(d)+v.getEntry(d));
+					}
+					break;
+				case 2:
+					// With simple gradient descent
+					x = x.add(F.Df(x).mapMultiply(-gamma));
+					//gamma = gamma*2 > iteration ? gamma*2 : gamma;
 				}
+				
+				
+				
 				
 				double Ff = F.f(x);
 				if (Ff<F.f(p.getLocalBest())){

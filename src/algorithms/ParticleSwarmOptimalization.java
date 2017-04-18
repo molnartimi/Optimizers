@@ -12,12 +12,12 @@ import main.Main;
 public class ParticleSwarmOptimalization implements Optimizer {
 	protected int swarmSize = 100;
 	protected double border = 5;
-	protected int iteration = 20;
+	protected int iteration = 50;
 	protected RealVector globalBest = null;
 	protected double globalBestF;
 	
-	protected double omega = 0.1;
-	protected double fiP = 0.2;
+	protected double omega = 0.2;
+	protected double fiP = 0.4;
 	protected double fiG = 0.8;
 	
 	protected class Particle {
@@ -57,16 +57,16 @@ public class ParticleSwarmOptimalization implements Optimizer {
 	
 	protected void putDownParticles(ArrayList<Particle> swarm,Function F){
 		Random r = new Random();
-		/*double interval = border/Math.sqrt(swarmSize);
+		double interval = border/Math.sqrt(swarmSize);
 		double posX = 0;
-		double posY = border;*/
+		double posY = border;
 		
 		for(int i=0; i<swarmSize; i++) {
 			
 			RealVector pos = MatrixUtils.createRealVector(new double[F.getDimension()]);
 			RealVector vel = MatrixUtils.createRealVector(new double[F.getDimension()]);
 			
-			/*if (posX < border){
+			if (posX < border){
 				pos.setEntry(0, posX);
 				posX += interval;
 			}
@@ -77,10 +77,10 @@ public class ParticleSwarmOptimalization implements Optimizer {
 			
 			if (posY < border){
 				pos.setEntry(1, posY);
-			}*/
+			}
 			
 			for (int d=0; d<F.getDimension(); d++){
-				pos.setEntry(d, r.nextDouble()*border-border);
+				//pos.setEntry(d, r.nextDouble()*border-border);
 				vel.setEntry(d, r.nextDouble()*2*border-border);
 			}
 			

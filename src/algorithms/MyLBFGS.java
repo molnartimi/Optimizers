@@ -35,7 +35,7 @@ public class MyLBFGS implements Optimizer {
 		diffF.setFunction(F);
 		double[] xn = new double[F.getDimension()];
 		for(int i=0;i<F.getDimension();i++)
-			xn[i] = 0.5;
+			xn[i] = 3;
 		
 		double[] result = lbfgs.minimize(diffF, xn);
 		

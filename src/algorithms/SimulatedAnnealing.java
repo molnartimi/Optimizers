@@ -10,10 +10,10 @@ import functions.Function;
  * source: http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
  */
 public class SimulatedAnnealing implements Optimizer {
-	private double  inittemp = 1000;
-	private double coolingRate = 0.01;
+	private double  inittemp = 100;
+	private double coolingRate = 0.03;
 	private double border = 1;
-	private int iteration = 3;
+	private int iteration = 2;
 		
 	@Override
 	public double method(Function F) {

@@ -7,7 +7,9 @@ import functions.Function;
 import main.Main;
 
 public class GradientAlgorithm implements Optimizer {
-
+	// TODO NOT TO FORGET: maybe it would be useful to call it more time, with different initial place
+	
+	
 	@Override
 	public double method(Function f) {
 		return 0;
@@ -20,7 +22,7 @@ public class GradientAlgorithm implements Optimizer {
 		
 		double gamma = 1.0;
 		RealVector xn = MatrixUtils.createRealVector(new double[F.getDimension()]);
-		xn.set(0.5);
+		xn.set(3);
 		RealVector xnBefore;
 		RealVector xnNext;
 		
