@@ -10,9 +10,9 @@ import functions.Function;
 import main.Main;
 
 public class ParticleSwarmOptimalization implements Optimizer {
-	protected int swarmSize = 100;
+	protected int swarmSize = 30;
 	protected double border = 5;
-	protected int iteration = 50;
+	protected int iteration = 10;
 	protected RealVector globalBest = null;
 	protected double globalBestF;
 	
@@ -24,20 +24,28 @@ public class ParticleSwarmOptimalization implements Optimizer {
 		private RealVector x;
 		private RealVector v;
 		private RealVector best;
+		private double bestValue;
+		private Function F;
 		
-		public Particle (RealVector pos, RealVector vel){
+		public Particle (Function f, RealVector pos, RealVector vel){
+			F = f;
 			x = pos;
-			best = pos;
+			best = x.copy();
 			v = vel;
-			
+			bestValue = F.f(best);
 		}
 		
 		public void updateBest() {
-			best = x;
+			best = x.copy();
+			bestValue = F.f(best);
 		}
 		
 		public RealVector getLocalBest() {
 			return best;
+		}
+		
+		public double getLocalBestValue(){
+			return bestValue;
 		}
 		
 		public RealVector getV(){
@@ -57,37 +65,19 @@ public class ParticleSwarmOptimalization implements Optimizer {
 	
 	protected void putDownParticles(ArrayList<Particle> swarm,Function F){
 		Random r = new Random();
-		double interval = border/Math.sqrt(swarmSize);
-		double posX = 0;
-		double posY = border;
 		
 		for(int i=0; i<swarmSize; i++) {
-			
 			RealVector pos = MatrixUtils.createRealVector(new double[F.getDimension()]);
 			RealVector vel = MatrixUtils.createRealVector(new double[F.getDimension()]);
-			
-			if (posX < border){
-				pos.setEntry(0, posX);
-				posX += interval;
-			}
-			else{
-				posX = -border;
-				posY += interval;
-			}
-			
-			if (posY < border){
-				pos.setEntry(1, posY);
-			}
-			
 			for (int d=0; d<F.getDimension(); d++){
-				//pos.setEntry(d, r.nextDouble()*border-border);
-				vel.setEntry(d, r.nextDouble()*2*border-border);
+				pos.setEntry(d, r.nextDouble()*border);
+				vel.setEntry(d, r.nextDouble()*2*border);
 			}
 			
-			Particle p = new Particle(pos,vel);
+			Particle p = new Particle(F,pos,vel);
 			swarm.add(p);
 			
-			if ( globalBest == null || F.f(pos)<globalBestF){
+			if ( globalBest == null || p.getLocalBestValue()<globalBestF){
 				globalBest = pos.copy();
 				globalBestF = F.f(globalBest);
 			}
@@ -122,9 +112,9 @@ public class ParticleSwarmOptimalization implements Optimizer {
 				
 				p.step(x, v);
 				double Ff = F.f(x);
-				if (Ff<F.f(p.getLocalBest())){
+				if (Ff < p.getLocalBestValue()){
 					p.updateBest();
-					if (Ff<globalBestF){
+					if (Ff < globalBestF){
 						globalBest = x.copy();
 						globalBestF = F.f(globalBest);
 					}

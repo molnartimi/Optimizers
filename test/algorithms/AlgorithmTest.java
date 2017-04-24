@@ -15,6 +15,7 @@ public class AlgorithmTest {
 	
 	
 	@Test
+	@Ignore
 	public void gradientTest(){
 		opt = new GradientAlgorithm();
 		
@@ -24,7 +25,7 @@ public class AlgorithmTest {
 		FunctionSPDN.ctr=0;
 	}
 	
-	@Ignore
+	//@Ignore
 	@Test
 	public void particleSwarmTest(){
 		opt = new ParticleSwarmOptimalization();
@@ -35,6 +36,7 @@ public class AlgorithmTest {
 		FunctionSPDN.ctr=0;
 	}
 	
+	@Ignore
 	@Test
 	public void lbfgsTest(){
 		opt = new MyLBFGS(100);
@@ -45,15 +47,37 @@ public class AlgorithmTest {
 		FunctionSPDN.ctr=0;
 	}
 	
-	@Ignore
+	//@Ignore
 	@Test
-	public void psoWithGDTest(){
-		opt = new PSOwithGD();
+	public void gpsoWithGVTest(){
+		opt = new GPSOwithGradientValue();
 		
+		result = opt.Method(f);
+		System.out.println("Particle swarm optimalization with gradient value: " + result.toString());
+		System.out.println("FunctionSPDN.runAnalyzer() counter: " + FunctionSPDN.ctr);
+		FunctionSPDN.ctr=0;
+	}
+	
+	//@Ignore
+	@Test
+	public void gpsoWithGDTest() {
+		opt = new GPSOwithGradientDescent();
+
 		result = opt.Method(f);
 		System.out.println("Particle swarm optimalization with gradient descent: " + result.toString());
 		System.out.println("FunctionSPDN.runAnalyzer() counter: " + FunctionSPDN.ctr);
-		FunctionSPDN.ctr=0;
+		FunctionSPDN.ctr = 0;
+	}
+	
+	//@Ignore
+	@Test
+	public void gpsoWithMixedTest() {
+		opt = new GPSOwithMixed();
+
+		result = opt.Method(f);
+		System.out.println("Particle swarm optimalization with gradient descent: " + result.toString());
+		System.out.println("FunctionSPDN.runAnalyzer() counter: " + FunctionSPDN.ctr);
+		FunctionSPDN.ctr = 0;
 	}
 	
 	@Ignore
@@ -63,6 +87,17 @@ public class AlgorithmTest {
 		
 		result = opt.Method(f);
 		System.out.println("Simulated annealing: " + result.toString());
+		System.out.println("FunctionSPDN.runAnalyzer() counter: " + FunctionSPDN.ctr);
+		FunctionSPDN.ctr=0;
+	}
+	
+	@Test
+	@Ignore
+	public void beesTest(){
+		opt = new BeesAlgorithm();
+		
+		result = opt.Method(f);
+		System.out.println("Bees algorithm: " + result.toString());
 		System.out.println("FunctionSPDN.runAnalyzer() counter: " + FunctionSPDN.ctr);
 		FunctionSPDN.ctr=0;
 	}

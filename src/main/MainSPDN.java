@@ -14,7 +14,6 @@ import org.apache.commons.math3.linear.RealVector;
 import algorithms.GradientAlgorithm;
 import algorithms.MyLBFGS;
 import algorithms.Optimizer;
-import algorithms.PSOwithGD;
 import algorithms.ParticleSwarmOptimalization;
 import algorithms.SimulatedAnnealing;
 import functions.Function;

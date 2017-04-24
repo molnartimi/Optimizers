@@ -7,7 +7,6 @@ import algorithms.GradientAlgorithm;
 import algorithms.MyLBFGS;
 import algorithms.NewtonsMethod;
 import algorithms.Optimizer;
-import algorithms.PSOwithGD;
 import algorithms.ParticleSwarmOptimalization;
 import algorithms.SimulatedAnnealing;
 import functions.ExampleFunction;
@@ -36,7 +35,7 @@ public class Main {
 			case 3: opt = new ParticleSwarmOptimalization(); break;
 			case 4: opt = new SimulatedAnnealing(); break;
 			case 5: opt = new MyLBFGS(); break;
-			case 6: opt = new PSOwithGD(); break;
+			//case 6: opt = new PSOwithGD(); break;
 			case 0: run = false;
 			}
 			
