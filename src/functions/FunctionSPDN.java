@@ -41,16 +41,12 @@ public class FunctionSPDN implements Function {
 	private AnalysisResult runAnalyzer(RealVector variables){
 		ctr++;
 		
-	/*	if(variables.getEntry(0)<=0 ||  variables.getEntry(1)<=0){
-			System.err.println("Some of the parameters are less than 0! It may occur wrong solution.");
-		}*/
-		
 		Reward reward1 = rewards.get(0);
         Reward reward2 = rewards.get(1);
         
         AnalysisResult result = analyzer.createAnalysisBuilder()
-                    .withParameter(parameters.get(0), variables.getEntry(0))
-                    .withParameter(parameters.get(1), variables.getEntry(1))
+                    .withParameter(parameters.get(0), Math.exp(variables.getEntry(0)))
+                    .withParameter(parameters.get(1), Math.exp(variables.getEntry(1)))
                     .withReward(reward1,parameters.get(0), parameters.get(1))
                     .withReward(reward2,parameters.get(0), parameters.get(1))
                     .run();
@@ -91,14 +87,21 @@ public class FunctionSPDN implements Function {
         Reward reward2 = rewards.get(1);
         
         AnalysisResult result = runAnalyzer(variables);
-            
+        
+        double idleResult = result.getValue(reward1);
+        double servedRequestsResult = result.getValue(reward2);
+        
         double idleWithRequestRate = result.getSensitivity(reward1, parameters.get(0));
         double idleWithServiceTime = result.getSensitivity(reward1, parameters.get(1));
         double servedRequestsWithRequestRate = result.getSensitivity(reward2, parameters.get(0));
         double servedRequestsWithServiceTime = result.getSensitivity(reward2, parameters.get(1));
-            
-        fDResult[0] = -2*idleWithRequestRate - 2*servedRequestsWithRequestRate;
-        fDResult[1] = -2*idleWithServiceTime - 2*servedRequestsWithServiceTime;
+        
+        fDResult[0] = -2*(empiricalMeasurements.get(reward1)-idleResult) * idleWithRequestRate * Math.exp(variables.getEntry(0)) +
+        			  -2*(empiricalMeasurements.get(reward2)-servedRequestsResult) * servedRequestsWithRequestRate * Math.exp(variables.getEntry(0));
+        fDResult[1] = -2*(empiricalMeasurements.get(reward1)-idleResult) * idleWithServiceTime * Math.exp(variables.getEntry(1)) +
+  			  		  -2*(empiricalMeasurements.get(reward2)-servedRequestsResult) * servedRequestsWithServiceTime * Math.exp(variables.getEntry(1));
+        //fDResult[0] = -2*idleWithRequestRate - 2*servedRequestsWithRequestRate;
+        //fDResult[1] = -2*idleWithServiceTime - 2*servedRequestsWithServiceTime;
 
         return MatrixUtils.createRealVector(fDResult);
 	}

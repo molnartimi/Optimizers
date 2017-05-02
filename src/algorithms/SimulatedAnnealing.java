@@ -11,9 +11,10 @@ import functions.Function;
  */
 public class SimulatedAnnealing implements Optimizer {
 	private double  inittemp = 100;
-	private double coolingRate = 0.03;
-	private double border = 1;
-	private int iteration = 2;
+	private double coolingRate = 0.1;
+	private double border = 0.3;
+	private double borderRate = 0.05;
+	private int iteration = 3;
 		
 	@Override
 	public double method(Function F) {
@@ -65,6 +66,7 @@ public class SimulatedAnnealing implements Optimizer {
 				}
 					
 				temp *= 1-coolingRate;
+				border *= 1-borderRate;
 			}
 		
 		System.out.println("Iteration number of Simulated Annealing: "+ctr);

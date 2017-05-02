@@ -1,4 +1,4 @@
-package algorithms;
+package test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 import org.apache.commons.math3.linear.RealVector;
 import org.junit.Test;
 
+import algorithms.Optimizer;
 import functions.ExampleFunction;
 import functions.Function;
 import main.Main;

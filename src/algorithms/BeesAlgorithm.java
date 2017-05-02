@@ -11,11 +11,11 @@ import org.apache.commons.math3.linear.RealVector;
 import functions.Function;
 
 public class BeesAlgorithm implements Optimizer {
-	private int ns = 30;	//scout
-	private int nb = 10;	//best sites
+	private int ns = 10;	//scout
+	private int nb = 5;		//best sites
 	private int ne = 2;		//elite sites
-	private int nre = 20;	//recruited for elite sites
-	private int nrb = 5;	//recruited for best sites
+	private int nre = 10;	//recruited for elite sites
+	private int nrb = 3;	//recruited for best sites
 	
 	private int maxIter = 10;
 	private double border = 5;
@@ -97,7 +97,7 @@ public class BeesAlgorithm implements Optimizer {
 				for (int j = 0; j < nre; j++) {
 					RealVector pos = MatrixUtils.createRealVector(new double[F.getDimension()]);
 					for (int d = 0; d < F.getDimension(); d++) {
-						pos.setEntry(d, localBest.getEntry(d) + r.nextDouble() * R);
+						pos.setEntry(d, localBest.getEntry(d) + (r.nextDouble()*2-1) * R);
 					}
 					double newPosValue = F.f(pos);
 					if (newPosValue < scouts.get(i).getVal()) {

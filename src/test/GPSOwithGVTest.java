@@ -1,4 +1,6 @@
-package algorithms;
+package test;
+
+import algorithms.GPSOwithGradientValue;
 
 public class GPSOwithGVTest extends EasyTest{
 

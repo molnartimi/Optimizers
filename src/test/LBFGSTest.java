@@ -1,4 +1,6 @@
-package algorithms;
+package test;
+
+import algorithms.MyLBFGS;
 
 public class LBFGSTest extends EasyTest{
 	public LBFGSTest(){
