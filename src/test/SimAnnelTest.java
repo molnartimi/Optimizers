@@ -1,4 +1,6 @@
-package algorithms;
+package test;
+
+import algorithms.SimulatedAnnealing;
 
 public class SimAnnelTest extends EasyTest{
 	public SimAnnelTest(){

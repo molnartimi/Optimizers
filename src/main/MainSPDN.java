@@ -28,34 +28,26 @@ public class MainSPDN {
 	
 	public static Function setModel(double idleEmpirical, double servedRequestsEmpirical){
 		Spdn spdn = new Spdn("E:/Timi/BME/6.félév/Önálló laboratórium/Optimizers");
-        InputStream model;
-		try {
-			model = new FileInputStream("src/models/simple-server.pnml");
-			SpdnAnalyzer analyzer = spdn.openModel(model, AnalysisConfiguration.DEFAULT);
-			
-			//parameters
-			List<Parameter> parameters = new ArrayList<Parameter>();
-			parameters.add(Parameter.ofName("requestRate"));
-	        parameters.add(Parameter.ofName("serviceTime"));
-	        
-	        //rewards
-	        Reward idle = Reward.instantaneous("Idle");
-	        Reward servedRequests = Reward.instantaneous("ServedRequests");
-	        ArrayList<Reward> rewardList = new ArrayList<Reward>();
-	        rewardList.add(idle);
-	        rewardList.add(servedRequests);
-	        
-	        Map<Reward, Double> empiricalMeasurements = new HashMap<Reward,Double>();
-	        empiricalMeasurements.put(idle, idleEmpirical);
-	        empiricalMeasurements.put(servedRequests, servedRequestsEmpirical);
-	        
-	        return new FunctionSPDN(analyzer, parameters, rewardList, empiricalMeasurements);
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+    
+		SpdnAnalyzer analyzer = spdn.openModel("src/models/simple-server.pnml", AnalysisConfiguration.DEFAULT);
+
+		// parameters
+		List<Parameter> parameters = new ArrayList<Parameter>();
+		parameters.add(Parameter.ofName("requestRate"));
+		parameters.add(Parameter.ofName("serviceTime"));
+
+		// rewards
+		Reward idle = Reward.instantaneous("Idle");
+		Reward servedRequests = Reward.instantaneous("ServedRequests");
+		ArrayList<Reward> rewardList = new ArrayList<Reward>();
+		rewardList.add(idle);
+		rewardList.add(servedRequests);
+
+		Map<Reward, Double> empiricalMeasurements = new HashMap<Reward, Double>();
+		empiricalMeasurements.put(idle, idleEmpirical);
+		empiricalMeasurements.put(servedRequests, servedRequestsEmpirical);
+
+		return new FunctionSPDN(analyzer, parameters, rewardList, empiricalMeasurements);
 	}
 
 	public static void main(String[] args) {

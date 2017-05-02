@@ -1,4 +1,6 @@
-package algorithms;
+package test;
+
+import algorithms.GradientAlgorithm;
 
 public class GradientTest extends EasyTest{
 	public GradientTest(){

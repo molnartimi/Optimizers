@@ -11,10 +11,10 @@ import org.apache.commons.math3.linear.RealVector;
 import functions.Function;
 
 public class BeesAlgorithm implements Optimizer {
-	private int ns = 30;	//scout
-	private int nb = 10;	//best sites
+	private int ns = 10;	//scout
+	private int nb = 5;	//best sites
 	private int ne = 2;		//elite sites
-	private int nre = 20;	//recruited for elite sites
+	private int nre = 10;	//recruited for elite sites
 	private int nrb = 5;	//recruited for best sites
 	
 	private int maxIter = 10;
@@ -77,6 +77,8 @@ public class BeesAlgorithm implements Optimizer {
 
 	@Override
 	public RealVector Method(Function F) {
+		System.out.println("Bees algorithm is started");
+		
 		Random r = new Random();
 		
 		ArrayList<Bee> scouts = new ArrayList<Bee>();
@@ -89,6 +91,8 @@ public class BeesAlgorithm implements Optimizer {
 		
 		Collections.sort(scouts, new BeeComparator());
 		
+		int ctr = 0;
+		
 		for (int iter = 0; iter < maxIter; iter++) {
 
 			// elite bees and their foragers
@@ -97,7 +101,7 @@ public class BeesAlgorithm implements Optimizer {
 				for (int j = 0; j < nre; j++) {
 					RealVector pos = MatrixUtils.createRealVector(new double[F.getDimension()]);
 					for (int d = 0; d < F.getDimension(); d++) {
-						pos.setEntry(d, localBest.getEntry(d) + r.nextDouble() * R);
+						pos.setEntry(d, localBest.getEntry(d) + (r.nextDouble()*2-1) * R);
 					}
 					double newPosValue = F.f(pos);
 					if (newPosValue < scouts.get(i).getVal()) {
@@ -108,9 +112,10 @@ public class BeesAlgorithm implements Optimizer {
 						eliteRecruited.add(new Bee(pos, newPosValue));
 					}
 				}
+				ctr++;
 			}
 
-			// best bees and theri foragers
+			// best bees and their foragers
 			for (int i = ne; i < nb; i++) {
 				RealVector localBest = scouts.get(i).getPos().copy();
 				for (int j = 0; j < nrb; j++) {
@@ -126,6 +131,7 @@ public class BeesAlgorithm implements Optimizer {
 					} else {
 						bestRecruited.add(new Bee(pos, newPosValue));
 					}
+					ctr++;
 				}
 			}
 
@@ -136,12 +142,13 @@ public class BeesAlgorithm implements Optimizer {
 					pos.setEntry(d, r.nextDouble() * border);
 				}
 				scouts.get(i).setPos(pos, F.f(pos));
+				ctr++;
 			}
 
 			Collections.sort(scouts, new BeeComparator());
 			R *= smallerRate;
 		}
-		
+		System.out.println("Iteration number of Bees algorithm: "+ctr);
 		return scouts.get(0).getPos();
 	}
 
