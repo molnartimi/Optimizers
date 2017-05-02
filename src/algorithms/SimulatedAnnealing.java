@@ -4,22 +4,21 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealVector;
 
 import functions.Function;
-import main.Main;
 
 
 /**
  * source: http://www.theprojectspot.com/tutorial-post/simulated-annealing-algorithm-for-beginners/6
  */
 public class SimulatedAnnealing implements Optimizer {
-	private double  inittemp = 1000;
-	private double coolingRate = 0.01;
-	private double border = 1;
+	private double  inittemp = 100;
+	private double coolingRate = 0.1;
+	private double border = 0.3;
+	private double borderRate = 0.05;
 	private int iteration = 3;
 		
 	@Override
 	public double method(Function F) {
-		RealVector result = Method(F);
-		return result.getEntry(0);
+		return Method(F).getEntry(0);
 	}
 	
 	// Calculate the acceptance probability
@@ -34,11 +33,16 @@ public class SimulatedAnnealing implements Optimizer {
 	
 	@Override
 	public RealVector Method(Function F) {
+		System.out.println("Simulated annealing is started");
+		
 		int ctr=0;
 		double temp = inittemp;
 		RealVector xn = MatrixUtils.createRealVector(new double[F.getDimension()]);
+		xn.set(0.5);
+		
 		RealVector xnext = MatrixUtils.createRealVector(new double[F.getDimension()]);
 		double fx = F.f(xn);
+		double bestF = fx;
 		double fxnext;
 		RealVector best = xn.copy();
 		
@@ -53,13 +57,16 @@ public class SimulatedAnnealing implements Optimizer {
 					if (acceptanceProbability(fx,fxnext,temp) > Math.random())
 						xn = xnext.copy();
 					
-					if (F.f(xn) < F.f(best))
+					if (F.f(xn) < bestF){
 						best = xn.copy();
+						bestF = F.f(best);
+					}
 					
 					ctr++;
 				}
 					
 				temp *= 1-coolingRate;
+				border *= 1-borderRate;
 			}
 		
 		System.out.println("Iteration number of Simulated Annealing: "+ctr);
