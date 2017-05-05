@@ -25,10 +25,7 @@ public class MyDiffFunction implements DiffFunction{
 		results.add(value);
 		
 		double[] gradient = new double[func.getDimension()];
-		if(func.getDimension() == 1)
-			gradient[0] = func.df(d[0]);
-		else
-			gradient = func.Df(MatrixUtils.createRealVector(d)).toArray();
+		gradient = func.Df(MatrixUtils.createRealVector(d)).toArray();
 		return new ValueAndGradient(value,gradient);
 	}
 	

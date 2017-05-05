@@ -72,11 +72,6 @@ public class BeesAlgorithm implements Optimizer {
 	}
 	
 	@Override
-	public double method(Function f) {
-		return 0;
-	}
-
-	@Override
 	public RealVector Method(Function F) {
 		System.out.println("Bees algorithm is started");
 		

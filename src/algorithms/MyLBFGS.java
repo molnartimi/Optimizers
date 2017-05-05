@@ -19,12 +19,6 @@ public class MyLBFGS implements Optimizer {
 	public MyLBFGS(int iter){
 		maxIter = iter;
 	}
-	
-	
-	@Override
-	public double method(Function F) {
-		return Method(F).toArray()[0];
-	}
 
 	@Override
 	public RealVector Method(Function F) {

@@ -10,32 +10,6 @@ import test.AlgorithmTest;
 public class NewtonsMethod implements Optimizer {
 	
 	@Override
-	public double method(Function F) {
-		
-		double xn = 0;
-		double dx = F.df(xn);
-		double ddx = F.ddf(xn);
-		int ctr = 0;
-		
-		do{
-			if (ddx == 0){
-				xn += AlgorithmTest.epszilon;
-				dx = F.df(xn);
-				ddx = F.ddf(xn);
-				continue;
-			}
-			xn-=dx/ddx;
-			ctr++;
-
-			dx = F.df(xn);
-			ddx = F.ddf(xn);	
-		} while(Math.abs(dx) >= AlgorithmTest.epszilon);
-		
-		System.out.println("Iteration number of Newton's method: "+ctr);
-		return xn;
-	}
-
-	@Override
 	public RealVector Method(Function F) {
 		
 		double gamma = 1.0;

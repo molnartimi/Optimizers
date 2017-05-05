@@ -8,12 +8,6 @@ import test.AlgorithmTest;
 
 public class GradientAlgorithm implements Optimizer {
 	// TODO NOT TO FORGET: maybe it would be useful to call it more time, with different initial place
-	
-	
-	@Override
-	public double method(Function f) {
-		return 0;
-	}
 
 	@Override
 	public RealVector Method(Function F) {

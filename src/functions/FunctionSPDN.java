@@ -77,12 +77,6 @@ public class FunctionSPDN implements Function {
 	}
 
 	@Override
-	public double df(double x) {
-		System.err.println("FunctionSPDN.df(): It's not implemented yet. :(");
-		return 0;
-	}
-
-	@Override
 	public RealVector Df(RealVector variables) {
 		dctr++;
 		
@@ -109,12 +103,6 @@ public class FunctionSPDN implements Function {
         //fDResult[1] = -2*idleWithServiceTime - 2*servedRequestsWithServiceTime; 
 
         return MatrixUtils.createRealVector(fDResult);
-	}
-
-	@Override
-	public double ddf(double x) {
-		System.err.println("FunctionSPDN.ddf(): We cannot count second derivative. :(");
-		return 0;
 	}
 
 	@Override

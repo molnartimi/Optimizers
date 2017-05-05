@@ -18,11 +18,6 @@ public class SimulatedAnnealing implements Optimizer {
 	private double border = 0.3;
 	private double borderRate = 0.05;
 	private int iteration = 3;
-		
-	@Override
-	public double method(Function F) {
-		return Method(F).getEntry(0);
-	}
 	
 	// Calculate the acceptance probability
 	public double acceptanceProbability(double energy, double newEnergy, double temp) {

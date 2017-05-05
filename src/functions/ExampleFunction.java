@@ -13,12 +13,6 @@ public class ExampleFunction implements Function {
 
 	@Override
 	public double f(RealVector variables) {
-		// y = (x-3)^2
-		if (id == 0) return (variables.getEntry(0)-3)*(variables.getEntry(0)-3);
-		
-		// y = (x-21)^2+5x
-		if (id == 1) return (variables.getEntry(0)-21)*(variables.getEntry(0)-21)+5*variables.getEntry(0);
-		
 		// y = sin(x)+cos(y)
 		if (id == 2) return Math.sin(variables.getEntry(0))+Math.cos(variables.getEntry(1));
 		
@@ -27,18 +21,7 @@ public class ExampleFunction implements Function {
 		
 		// k = x^2+y^2+(z-1)^2
 		if (id == 4) return variables.getEntry(0)*variables.getEntry(0)+variables.getEntry(1)*variables.getEntry(1)+(variables.getEntry(2)-1)*(variables.getEntry(2)-1);
-		
-		// y = sin(x)
-		if (id == 5) return Math.sin(variables.getEntry(0));
-		return -1;
-	}
-
-	@Override
-	public double df(double x) {
-		if (id == 0) return 2*(x-3);
-		if (id == 1) return 2*(x-21)+5;
-		if (id == 5) return Math.cos(x);
-		return -1;
+		return 0;
 	}
 	
 	@Override
@@ -59,14 +42,6 @@ public class ExampleFunction implements Function {
 			result[2] = 2*(variables.getEntry(2)-1);
 		}
 		return MatrixUtils.createRealVector(result);
-	}
-	
-	@Override
-	public double ddf(double x) {
-		if (id == 0) return 2;
-		if (id == 1) return 2;
-		if (id == 5) return -Math.sin(x);
-		return -1;
 	}
 
 	@Override
@@ -103,7 +78,7 @@ public class ExampleFunction implements Function {
 	public int getDimension() {
 		if (id == 3 || id == 2) return 2;
 		if (id == 4) return 3;
-		return 1;
+		return 0;
 	}
 	
 	
