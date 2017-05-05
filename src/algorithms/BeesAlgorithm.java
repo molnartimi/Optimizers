@@ -9,6 +9,7 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealVector;
 
 import functions.Function;
+import main.CsvFileWriter;
 
 public class BeesAlgorithm implements Optimizer {
 	private int ns = 10;	//scout
@@ -79,6 +80,8 @@ public class BeesAlgorithm implements Optimizer {
 	public RealVector Method(Function F) {
 		System.out.println("Bees algorithm is started");
 		
+		ArrayList<Double> results = new ArrayList<>();
+		
 		Random r = new Random();
 		
 		ArrayList<Bee> scouts = new ArrayList<Bee>();
@@ -146,8 +149,12 @@ public class BeesAlgorithm implements Optimizer {
 			}
 
 			Collections.sort(scouts, new BeeComparator());
+			
+			results.add(scouts.get(0).getVal());
+			
 			R *= smallerRate;
 		}
+		//CsvFileWriter.writeOut("BeesAlgorithm3.csv", results);
 		System.out.println("Iteration number of Bees algorithm: "+ctr);
 		return scouts.get(0).getPos();
 	}

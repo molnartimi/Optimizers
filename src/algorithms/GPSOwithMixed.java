@@ -7,6 +7,7 @@ import org.apache.commons.math3.linear.RealVector;
 
 import algorithms.ParticleSwarmOptimalization.Particle;
 import functions.Function;
+import main.CsvFileWriter;
 
 public class GPSOwithMixed extends ParticleSwarmOptimalization{
 
@@ -31,6 +32,8 @@ public class GPSOwithMixed extends ParticleSwarmOptimalization{
 		putDownParticles(swarm,F);
 		Random r = new Random();
 		
+		ArrayList<Double> results = new ArrayList<>();
+		
 		for(int i=0; i<iteration; i++){
 			for (int j=0; j<swarmSize; j++){
 				Particle p = swarm.get(j);
@@ -51,7 +54,9 @@ public class GPSOwithMixed extends ParticleSwarmOptimalization{
 						globalBest = x.copy();
 						globalBestF = F.f(globalBest);
 					}
-				}	
+				}
+				
+				//results.add(globalBestF);
 			}
 			
 			RealVector temp = globalBest.copy();
@@ -65,8 +70,11 @@ public class GPSOwithMixed extends ParticleSwarmOptimalization{
 				globalBest = L.copy();
 				globalBestF = newValue;
 			}
+			
+			results.add(globalBestF);
+			
 		}
-		
+		//CsvFileWriter.writeOut("GPSOwithMixed30.csv", results);
 		System.out.println("GPSO is done, calculated with local search and gradient descent, with " + swarmSize + " particle and " + iteration + " iteration.");
 		return globalBest;
 	}

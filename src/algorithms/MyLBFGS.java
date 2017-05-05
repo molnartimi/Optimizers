@@ -5,7 +5,7 @@ import org.apache.commons.math3.linear.RealVector;
 import functions.Function;
 import functions.MyDiffFunction;
 import hu.bme.mit.inf.optimization.wrapper.breeze.LbfgsWrapper;
-import main.Main;
+import test.AlgorithmTest;
 
 
 public class MyLBFGS implements Optimizer {
@@ -13,7 +13,7 @@ public class MyLBFGS implements Optimizer {
 	private int maxIter = 20;
 	// An estimate of the machine precision.
 	//private double xtol = Math.pow(2, -52);
-	private double tolerance = Main.epszilon;
+	private double tolerance = AlgorithmTest.epszilon;
 	
 	public MyLBFGS(){}
 	public MyLBFGS(int iter){
@@ -39,6 +39,7 @@ public class MyLBFGS implements Optimizer {
 		
 		double[] result = lbfgs.minimize(diffF, xn);
 		
+		//diffF.writeOut();
 		System.out.println("Iteration number of L-BFGS: " + diffF.getCtr());
 		diffF.resetCtr();
 		

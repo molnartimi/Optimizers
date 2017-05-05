@@ -10,7 +10,6 @@ import org.junit.Test;
 import algorithms.Optimizer;
 import functions.ExampleFunction;
 import functions.Function;
-import main.Main;
 
 public class EasyTest {
 	protected Optimizer opt;
@@ -36,7 +35,7 @@ public class EasyTest {
 		tolerance[1]=Math.abs(result.getEntry(1));
 		
 		boolean ok = false;
-		if (tolerance[0] < Main.epszilon && tolerance[1] < Main.epszilon)
+		if (tolerance[0] < AlgorithmTest.epszilon && tolerance[1] < AlgorithmTest.epszilon)
 			ok = true;
 		
 		printTolerance();
@@ -56,7 +55,7 @@ public class EasyTest {
 		tolerance[2]=Math.abs(result.getEntry(2) - 1);
 		
 		boolean ok = false;
-		if (tolerance[0] < Main.epszilon && tolerance[1] < Main.epszilon && tolerance[2] < Main.epszilon)
+		if (tolerance[0] < AlgorithmTest.epszilon && tolerance[1] < AlgorithmTest.epszilon && tolerance[2] < AlgorithmTest.epszilon)
 			ok = true;
 		
 		printTolerance();
@@ -85,7 +84,7 @@ public class EasyTest {
 		tolerance[1]=Math.abs(result.getEntry(1)-Math.PI);
 		
 		boolean ok = false;
-		if (tolerance[0] < Main.epszilon && tolerance[1] < Main.epszilon)
+		if (tolerance[0] < AlgorithmTest.epszilon && tolerance[1] < AlgorithmTest.epszilon)
 			ok = true;
 		
 		printTolerance();

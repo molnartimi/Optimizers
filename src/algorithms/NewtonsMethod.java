@@ -5,7 +5,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 import functions.Function;
-import main.Main;
+import test.AlgorithmTest;
 
 public class NewtonsMethod implements Optimizer {
 	
@@ -19,7 +19,7 @@ public class NewtonsMethod implements Optimizer {
 		
 		do{
 			if (ddx == 0){
-				xn += Main.epszilon;
+				xn += AlgorithmTest.epszilon;
 				dx = F.df(xn);
 				ddx = F.ddf(xn);
 				continue;
@@ -29,7 +29,7 @@ public class NewtonsMethod implements Optimizer {
 
 			dx = F.df(xn);
 			ddx = F.ddf(xn);	
-		} while(Math.abs(dx) >= Main.epszilon);
+		} while(Math.abs(dx) >= AlgorithmTest.epszilon);
 		
 		System.out.println("Iteration number of Newton's method: "+ctr);
 		return xn;
@@ -57,7 +57,7 @@ public class NewtonsMethod implements Optimizer {
 					System.err.println(e.getMessage());
 			}
 			Dx = F.Df(xn);
-		} while (Dx.getNorm() >= Main.epszilon);
+		} while (Dx.getNorm() >= AlgorithmTest.epszilon);
 		
 		System.out.println("Iteration number of Newton's method: "+ctr);
 		return xn;

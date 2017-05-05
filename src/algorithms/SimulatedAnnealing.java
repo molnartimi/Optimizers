@@ -1,9 +1,12 @@
 package algorithms;
 
+import java.util.ArrayList;
+
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealVector;
 
 import functions.Function;
+import main.CsvFileWriter;
 
 
 /**
@@ -34,6 +37,8 @@ public class SimulatedAnnealing implements Optimizer {
 	@Override
 	public RealVector Method(Function F) {
 		System.out.println("Simulated annealing is started");
+		
+		ArrayList<Double> results = new ArrayList<>();
 		
 		int ctr=0;
 		double temp = inittemp;
@@ -67,8 +72,10 @@ public class SimulatedAnnealing implements Optimizer {
 					
 				temp *= 1-coolingRate;
 				border *= 1-borderRate;
+				
+				results.add(bestF);
 			}
-		
+		//CsvFileWriter.writeOut("SimulatedAnnealing6.csv", results);
 		System.out.println("Iteration number of Simulated Annealing: "+ctr);
 		
 		return best;

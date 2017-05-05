@@ -11,7 +11,6 @@ import hu.bme.mit.inf.petridotnet.spdn.AnalysisResult;
 import hu.bme.mit.inf.petridotnet.spdn.Parameter;
 import hu.bme.mit.inf.petridotnet.spdn.Reward;
 import hu.bme.mit.inf.petridotnet.spdn.SpdnAnalyzer;
-import main.Main;
 
 public class FunctionSPDN implements Function {
 	private SpdnAnalyzer analyzer;
@@ -19,6 +18,8 @@ public class FunctionSPDN implements Function {
 	private List<Reward> rewards;
 	private Map<Reward,Double> empiricalMeasurements;
 	public static int ctr = 0;
+	private int fctr = 0;
+	private int dctr = 0;
 	
 	/**
 	 * 
@@ -57,6 +58,8 @@ public class FunctionSPDN implements Function {
 	
 	@Override
 	public double f(RealVector variables) {
+		fctr++;
+		
         double fResult = 0;
         
         Reward reward1 = rewards.get(0);
@@ -81,6 +84,8 @@ public class FunctionSPDN implements Function {
 
 	@Override
 	public RealVector Df(RealVector variables) {
+		dctr++;
+		
         double[] fDResult = new double[getDimension()];
         
         Reward reward1 = rewards.get(0);
@@ -121,6 +126,20 @@ public class FunctionSPDN implements Function {
 	@Override
 	public int getDimension() {
 		return 2;
+	}
+	
+	public int getFctr(){
+		return fctr;
+	}
+	
+	public int getDctr(){
+		return dctr;
+	}
+	
+	public void restartCtrs(){
+		ctr = 0;
+		fctr = 0;
+		dctr = 0;
 	}
 
 }

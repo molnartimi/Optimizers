@@ -4,7 +4,7 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealVector;
 
 import functions.Function;
-import main.Main;
+import test.AlgorithmTest;
 
 public class GradientAlgorithm implements Optimizer {
 	// TODO NOT TO FORGET: maybe it would be useful to call it more time, with different initial place
@@ -29,7 +29,7 @@ public class GradientAlgorithm implements Optimizer {
 		xnNext = xn.add(F.Df(xn).mapMultiply(-gamma));
 		int ctr = 1;
 		
-		while (F.Df(xnNext).getNorm() >= Main.epszilon){
+		while (F.Df(xnNext).getNorm() >= AlgorithmTest.epszilon){
 			xnBefore = xn.copy();
 			xn = xnNext.copy();
 			
