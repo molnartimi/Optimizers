@@ -7,17 +7,18 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
+import hu.bme.mit.inf.petridotnet.spdn.AnalysisBuilder;
 import hu.bme.mit.inf.petridotnet.spdn.AnalysisResult;
 import hu.bme.mit.inf.petridotnet.spdn.Parameter;
 import hu.bme.mit.inf.petridotnet.spdn.Reward;
 import hu.bme.mit.inf.petridotnet.spdn.SpdnAnalyzer;
 
 public class FunctionSPDN implements Function {
+	
 	private SpdnAnalyzer analyzer;
 	private List<Parameter> parameters;
 	private List<Reward> rewards;
 	private Map<Reward,Double> empiricalMeasurements;
-	public static int ctr = 0;
 	private int fctr = 0;
 	private int dctr = 0;
 	
@@ -40,40 +41,44 @@ public class FunctionSPDN implements Function {
 	}
 	
 	private AnalysisResult runAnalyzer(RealVector variables){
-		ctr++;
-		
-		Reward reward1 = rewards.get(0);
-        Reward reward2 = rewards.get(1);
         
-        AnalysisResult result = analyzer.createAnalysisBuilder()
-        			.withParameter(parameters.get(0), Math.exp(variables.getEntry(0))) 
-        			.withParameter(parameters.get(1), Math.exp(variables.getEntry(1))) 
-                    .withReward(reward1,parameters.get(0), parameters.get(1))
-                    .withReward(reward2,parameters.get(0), parameters.get(1))
-                    .run();
+        AnalysisBuilder builder = analyzer.createAnalysisBuilder();
         
+        setParams(builder,variables);
+        setRewards(builder);
+        
+        AnalysisResult result = builder.run();
+    
         return result;
 	}
 		
 	
+	private void setRewards(AnalysisBuilder builder) {
+		for(int i=0; i<rewards.size(); i++){
+			builder.withReward(rewards.get(i), parameters);
+		}
+		
+	}
+
+	private void setParams(AnalysisBuilder builder, RealVector variables) {
+		for(int i=0; i<parameters.size(); i++){
+			builder = builder.withParameter(parameters.get(i), Math.exp(variables.getEntry(i)));
+		}
+		
+	}
+
 	@Override
 	public double f(RealVector variables) {
 		fctr++;
 		
-        double fResult = 0;
-        
-        Reward reward1 = rewards.get(0);
-        Reward reward2 = rewards.get(1);
-        
-        AnalysisResult result = runAnalyzer(variables);
-            
-        double idleResult = result.getValue(reward1);
-        double servedRequestsResult = result.getValue(reward2);
-            
-        fResult = 	Math.pow(empiricalMeasurements.get(reward1)-idleResult, 2) + 
-        			Math.pow(empiricalMeasurements.get(reward2)-servedRequestsResult, 2);
-            		
-        return fResult;
+		AnalysisResult result = runAnalyzer(variables);
+		
+		double resultF = 0;
+		for(int i=0; i<rewards.size(); i++){
+			resultF += Math.pow(empiricalMeasurements.get(rewards.get(i)) - result.getValue(rewards.get(i)), 2);
+		}
+		
+		return resultF;
 	}
 
 	@Override
@@ -82,28 +87,23 @@ public class FunctionSPDN implements Function {
 		
         double[] fDResult = new double[getDimension()];
         
-        Reward reward1 = rewards.get(0);
-        Reward reward2 = rewards.get(1);
-        
         AnalysisResult result = runAnalyzer(variables);
         
-        double idleResult = result.getValue(reward1); 
-        double servedRequestsResult = result.getValue(reward2); 
-            
-        double idleWithRequestRate = result.getSensitivity(reward1, parameters.get(0));
-        double idleWithServiceTime = result.getSensitivity(reward1, parameters.get(1));
-        double servedRequestsWithRequestRate = result.getSensitivity(reward2, parameters.get(0));
-        double servedRequestsWithServiceTime = result.getSensitivity(reward2, parameters.get(1));
-            
-        fDResult[0] = -2*(empiricalMeasurements.get(reward1)-idleResult) * idleWithRequestRate * Math.exp(variables.getEntry(0)) + 
-                -2*(empiricalMeasurements.get(reward2)-servedRequestsResult) * servedRequestsWithRequestRate * Math.exp(variables.getEntry(0)); 
-        fDResult[1] = -2*(empiricalMeasurements.get(reward1)-idleResult) * idleWithServiceTime * Math.exp(variables.getEntry(1)) + 
-                -2*(empiricalMeasurements.get(reward2)-servedRequestsResult) * servedRequestsWithServiceTime * Math.exp(variables.getEntry(1)); 
-        //fDResult[0] = -2*idleWithRequestRate - 2*servedRequestsWithRequestRate; 
-        //fDResult[1] = -2*idleWithServiceTime - 2*servedRequestsWithServiceTime; 
-
+        for(int i=0; i<fDResult.length; i++){
+			fDResult[i] = 0;
+		}
+		
+		for (int i=0; i<fDResult.length; i++){
+			for(int j=0; j<rewards.size(); j++){
+				fDResult[i] += -2 * (empiricalMeasurements.get(rewards.get(j)) - result.getValue(rewards.get(j))) * 
+						result.getSensitivity(rewards.get(j), parameters.get(i)) * 
+						Math.exp(variables.getEntry(i));
+			}
+		}
+        
         return MatrixUtils.createRealVector(fDResult);
 	}
+	
 
 	@Override
 	public RealMatrix DDf(RealVector variables) {
@@ -113,7 +113,7 @@ public class FunctionSPDN implements Function {
 
 	@Override
 	public int getDimension() {
-		return 2;
+		return parameters.size();
 	}
 	
 	public int getFctr(){
@@ -125,7 +125,6 @@ public class FunctionSPDN implements Function {
 	}
 	
 	public void restartCtrs(){
-		ctr = 0;
 		fctr = 0;
 		dctr = 0;
 	}

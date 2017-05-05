@@ -16,7 +16,7 @@ public class GradientAlgorithm implements Optimizer {
 		
 		double gamma = 1.0;
 		RealVector xn = MatrixUtils.createRealVector(new double[F.getDimension()]);
-		xn.set(3);
+		xn.set(0.5);
 		RealVector xnBefore;
 		RealVector xnNext;
 		
