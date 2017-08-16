@@ -6,7 +6,7 @@ import org.apache.commons.math3.linear.MatrixUtils;
 
 import hu.bme.mit.inf.optimization.wrapper.breeze.DiffFunction;
 import hu.bme.mit.inf.optimization.wrapper.breeze.ValueAndGradient;
-import main.CsvFileWriter;
+import other.CsvFileWriter;
 import functions.Function;
 
 public class MyDiffFunction implements DiffFunction{
@@ -38,7 +38,7 @@ public class MyDiffFunction implements DiffFunction{
 	}
 	
 	public void writeOut(){
-		CsvFileWriter.writeOut("LBFGS3.csv", results);
+		CsvFileWriter.addBfgsList(results);
 	}
 	
 }

@@ -26,33 +26,44 @@ public class AlgorithmTest {
 	RealVector result;
 	
 	public AlgorithmTest(){
-		f = setModel(0.727272727272727, 1.09090909090909);
+//		f = setModel("E:/Timi/BME/6.félév/Önálló laboratórium/Optimizers",
+//				"src/models/simple-server.pnml",
+//				new String[]{"requestRate", "serviceTime"},
+//				new String[]{"Idle", "ServedRequests"},
+//				new double[]{0.727272727272727, 1.09090909090909});
+		
+		f = setModel("E:/Timi/BME/6.félév/Önálló laboratórium/Optimizers",
+				"src/models/vcl_stochastic.pnml",
+				new String[]{"incomingRate", "dispatchTime","warmDispatchTime","jobTime","powerTime","powerUsage","idlePowerFactor"},
+				new String[]{"jobsFinished", "powerUsage","noFreeMachines","jobsDispatched","machinesWorking","hotMachinesWorking","coldStarted"},
+				new double[]{0.0148748002933323,5.20955485293811,0.00209451703730028,0.0148748002307829,2.3647315051718,2.17735632582612,6.36702992684728E-7});
 		result = MatrixUtils.createRealVector(new double[f.getDimension()]);
 	}
 	
-	private FunctionSPDN setModel(double idleEmpirical, double servedRequestsEmpirical) {
-		Spdn spdn = new Spdn("E:/Timi/BME/6.félév/Önálló laboratórium/Optimizers");
+	public static FunctionSPDN setModel(String project, String model, String[] parameterArray, String[] rewardArray, double[] empiricalArray) {
+		Spdn spdn = new Spdn(project);
     
-		SpdnAnalyzer analyzer = spdn.openModel("src/models/simple-server.pnml", AnalysisConfiguration.DEFAULT);
+		SpdnAnalyzer analyzer = spdn.openModel(model, AnalysisConfiguration.DEFAULT);
 
 		// parameters
 		List<Parameter> parameters = new ArrayList<Parameter>();
-		parameters.add(Parameter.ofName("requestRate"));
-		parameters.add(Parameter.ofName("serviceTime"));
-
+		for(String s : parameterArray){
+			parameters.add(Parameter.ofName(s));
+		}
+		
 		// rewards
-		Reward idle = Reward.instantaneous("Idle");
-		Reward servedRequests = Reward.instantaneous("ServedRequests");
 		ArrayList<Reward> rewardList = new ArrayList<Reward>();
-		rewardList.add(idle);
-		rewardList.add(servedRequests);
+		for(String s : rewardArray){
+			rewardList.add(Reward.instantaneous(s));
+		}
 
 		Map<Reward, Double> empiricalMeasurements = new HashMap<Reward, Double>();
-		empiricalMeasurements.put(idle, idleEmpirical);
-		empiricalMeasurements.put(servedRequests, servedRequestsEmpirical);
+		for(int i = 0; i<rewardList.size(); i++){
+			empiricalMeasurements.put(rewardList.get(i), empiricalArray[i]);
+		}
 
 		return new FunctionSPDN(analyzer, parameters, rewardList, empiricalMeasurements);
-	}
+	}	
 	
 	
 	private RealVector convertResult(RealVector v){ 
@@ -64,7 +75,7 @@ public class AlgorithmTest {
 
 	
 	@Test
-	//@Ignore
+	@Ignore
 	public void gradientTest(){
 		opt = new GradientAlgorithm();
 		
@@ -72,7 +83,7 @@ public class AlgorithmTest {
 		System.out.println("Gradient descent:");
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void particleSwarmTest(){
 		opt = new ParticleSwarmOptimalization();
@@ -81,7 +92,7 @@ public class AlgorithmTest {
 		System.out.println("Particle swarm optimalization:");
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void lbfgsTest(){
 		opt = new MyLBFGS(100);
@@ -90,7 +101,7 @@ public class AlgorithmTest {
 		System.out.println("L-BFGS:");
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void gpsoWithGVTest(){
 		opt = new GPSOwithGradientValue();
@@ -99,7 +110,7 @@ public class AlgorithmTest {
 		System.out.println("Particle swarm optimalization with gradient value:");
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void gpsoWithGDTest() {
 		opt = new GPSOwithGradientDescent();
@@ -117,7 +128,7 @@ public class AlgorithmTest {
 		System.out.println("Particle swarm optimalization with gradient descent:");
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void simulatedAnnealingTest(){
 		opt = new SimulatedAnnealing();
@@ -127,7 +138,7 @@ public class AlgorithmTest {
 	}
 	
 	@Test
-	//@Ignore
+	@Ignore
 	public void beesTest(){
 		opt = new BeesAlgorithm();
 		

@@ -6,7 +6,7 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealVector;
 
 import functions.Function;
-import main.CsvFileWriter;
+import other.CsvFileWriter;
 
 
 /**
@@ -20,7 +20,7 @@ public class SimulatedAnnealing implements Optimizer {
 	private int iteration = 3;
 	
 	// Calculate the acceptance probability
-	public double acceptanceProbability(double energy, double newEnergy, double temp) {
+	private double acceptanceProbability(double energy, double newEnergy, double temp) {
         if (newEnergy < energy) {
             return 1.0;
         }
@@ -70,7 +70,7 @@ public class SimulatedAnnealing implements Optimizer {
 				
 				results.add(bestF);
 			}
-		//CsvFileWriter.writeOut("SimulatedAnnealing6.csv", results);
+		CsvFileWriter.addSimList(results);
 		System.out.println("Iteration number of Simulated Annealing: "+ctr);
 		
 		return best;

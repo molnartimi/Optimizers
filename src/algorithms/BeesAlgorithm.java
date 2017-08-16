@@ -9,16 +9,16 @@ import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealVector;
 
 import functions.Function;
-import main.CsvFileWriter;
+import other.CsvFileWriter;
 
 public class BeesAlgorithm implements Optimizer {
-	private int ns = 10;	//scout
-	private int nb = 5;	//best sites
-	private int ne = 2;		//elite sites
+	private int ns = 20;	//scout
+	private int nb = 8;		//best sites
+	private int ne = 3;		//elite sites
 	private int nre = 10;	//recruited for elite sites
 	private int nrb = 5;	//recruited for best sites
 	
-	private int maxIter = 10;
+	private int maxIter = 20;
 	private double border = 5;
 	private double initRadius = 0.3;
 	private double smallerRate = 0.7;
@@ -80,8 +80,6 @@ public class BeesAlgorithm implements Optimizer {
 		Random r = new Random();
 		
 		ArrayList<Bee> scouts = new ArrayList<Bee>();
-		ArrayList<Bee> eliteRecruited = new ArrayList<Bee>();
-		ArrayList<Bee> bestRecruited = new ArrayList<Bee>();
 		
 		double R = initRadius;
 		
@@ -93,7 +91,7 @@ public class BeesAlgorithm implements Optimizer {
 		
 		for (int iter = 0; iter < maxIter; iter++) {
 
-			// elite bees and their foragers
+			//elite bees and their foragers
 			for (int i = 0; i < ne; i++) {
 				RealVector localBest = scouts.get(i).getPos().copy();
 				for (int j = 0; j < nre; j++) {
@@ -104,10 +102,7 @@ public class BeesAlgorithm implements Optimizer {
 					double newPosValue = F.f(pos);
 					if (newPosValue < scouts.get(i).getVal()) {
 						localBest = pos;
-						eliteRecruited.add(scouts.get(i));
 						scouts.set(i, new Bee(pos, newPosValue));
-					} else {
-						eliteRecruited.add(new Bee(pos, newPosValue));
 					}
 				}
 				ctr++;
@@ -124,10 +119,7 @@ public class BeesAlgorithm implements Optimizer {
 					double newPosValue = F.f(pos);
 					if (newPosValue < scouts.get(i).getVal()) {
 						localBest = pos;
-						bestRecruited.add(scouts.get(i));
 						scouts.set(i, new Bee(pos, newPosValue));
-					} else {
-						bestRecruited.add(new Bee(pos, newPosValue));
 					}
 					ctr++;
 				}
@@ -149,7 +141,7 @@ public class BeesAlgorithm implements Optimizer {
 			
 			R *= smallerRate;
 		}
-		//CsvFileWriter.writeOut("BeesAlgorithm3.csv", results);
+		CsvFileWriter.addBeesList(results);
 		System.out.println("Iteration number of Bees algorithm: "+ctr);
 		return scouts.get(0).getPos();
 	}

@@ -16,6 +16,7 @@ import hu.bme.mit.inf.petridotnet.spdn.SpdnAnalyzer;
 public class FunctionSPDN implements Function {
 	
 	private SpdnAnalyzer analyzer;
+	private AnalysisBuilder builder;
 	private List<Parameter> parameters;
 	private List<Reward> rewards;
 	private Map<Reward,Double> empiricalMeasurements;
@@ -37,15 +38,13 @@ public class FunctionSPDN implements Function {
 		this.parameters = parameters;
 		this.rewards = rewards;
 		this.empiricalMeasurements = empiricalMeasurements;
-		
+		builder = analyzer.createAnalysisBuilder();
+		setRewards(builder);
 	}
 	
 	private AnalysisResult runAnalyzer(RealVector variables){
-        
-        AnalysisBuilder builder = analyzer.createAnalysisBuilder();
-        
+        System.err.println(fctr + ", " + dctr);
         setParams(builder,variables);
-        setRewards(builder);
         
         AnalysisResult result = builder.run();
     

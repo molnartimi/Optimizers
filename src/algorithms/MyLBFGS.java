@@ -11,8 +11,6 @@ import test.AlgorithmTest;
 public class MyLBFGS implements Optimizer {
 	private int m = 4;
 	private int maxIter = 20;
-	// An estimate of the machine precision.
-	//private double xtol = Math.pow(2, -52);
 	private double tolerance = AlgorithmTest.epszilon;
 	
 	public MyLBFGS(){}
@@ -33,7 +31,7 @@ public class MyLBFGS implements Optimizer {
 		
 		double[] result = lbfgs.minimize(diffF, xn);
 		
-		//diffF.writeOut();
+		diffF.writeOut();
 		System.out.println("Iteration number of L-BFGS: " + diffF.getCtr());
 		diffF.resetCtr();
 		
